@@ -6,12 +6,12 @@ public class ShootingEnemyBehaviour : MonoBehaviour
 {
     public Transform playerTransform;
     public Animator anim;
-    float vel = 0;
+    private float vel = 0;
+    private float acceleration = 2f;
+    private float deceleration = 5f;
     private float sightSpeed = 3f;
     private float distPlayer;
     private float speedMovShootingEnemy = 0.2f;
-    private float acceleration = 2f;
-    private float deceleration = 5f;
     private int health = 10;
 
     void Start()
@@ -32,7 +32,7 @@ public class ShootingEnemyBehaviour : MonoBehaviour
         {
             if(vel < 1)
             {
-                vel += Time.deltaTime*acceleration;
+                vel += Time.deltaTime * acceleration;
             }
             EnemyMovChasing();
         }else if(distPlayer <= 10f && vel > 0)

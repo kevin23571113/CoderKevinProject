@@ -11,6 +11,7 @@ public class InstantiatorShootingEnemy : MonoBehaviour
     private float bulletTimer = 1f;
     private float animTimer = 3f;
     private bool animShooting = false;
+    private float rangeRay = 11f;
 
     void Start()
     {
@@ -20,18 +21,20 @@ public class InstantiatorShootingEnemy : MonoBehaviour
     void Update()
     {
         distInstantPlayer = Vector3.Distance(playerTransform.position , transform.position);
-
         if(animShooting == true && bulletTimer > 0)
         {
            bulletTimer -= Time.deltaTime;
         }
-        else if(animShooting == true && bulletTimer <= 0)
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, transform.forward, out hit, rangeRay))
         {
-            anim.SetBool("Shooting", false);
-            animShooting = false;
-            Instantiate(instantiatorBullet, transform.position, transform.rotation);
+            if(hit.transform.tag != "Enemy" && animShooting == true && bulletTimer <= 0)
+            {
+                anim.SetBool("Shooting", false);
+                animShooting = false;
+                Instantiate(instantiatorBullet, transform.position, transform.rotation);
+            }
         }
-
         if(animTimer > 0)
         {
             animTimer -= Time.deltaTime;
@@ -49,7 +52,7 @@ public class InstantiatorShootingEnemy : MonoBehaviour
             bulletTimer = 2f;
             anim.SetBool("Shooting", true);
             animShooting = true;
-            animTimer= 5f;
+            animTimer= 7f;
         }
     }
 }
