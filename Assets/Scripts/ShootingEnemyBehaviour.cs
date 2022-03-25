@@ -6,6 +6,8 @@ public class ShootingEnemyBehaviour : MonoBehaviour
 {
     public Transform playerTransform;
     public Animator anim;
+    public GameObject prefabMoneda;
+    public List<GameObject> monedas = new List<GameObject>();
     private float vel = 0;
     private float acceleration = 2f;
     private float deceleration = 5f;
@@ -16,13 +18,17 @@ public class ShootingEnemyBehaviour : MonoBehaviour
 
     void Start()
     {
-        
+        monedas.Add(prefabMoneda);
+        monedas.Add(prefabMoneda);
+        monedas.Add(prefabMoneda);
+        monedas.Add(prefabMoneda);
     }
 
     void Update()
     {
         if(health <= 0)
         {
+            CoinsDropped();
             Destroy(this.gameObject);
         }
         LookPlayer();
@@ -50,6 +56,17 @@ public class ShootingEnemyBehaviour : MonoBehaviour
     public void EnemyMovChasing()
     {
         transform.position = Vector3.Lerp(transform.position, playerTransform.position, speedMovShootingEnemy*Time.deltaTime);
+    }
+
+    public void CoinsDropped()
+    {
+        for(int i = 0; i < monedas.Count; i++)
+            {
+
+                int randomx = Random.Range(-10, 10);
+                int randomz = Random.Range(-10, 10);
+                Instantiate(monedas[i], new Vector3(transform.position.x + randomx/16f, 0.8f, transform.position.z + randomz/16f), Quaternion.Euler(90f, 0, 0));
+            }
     }
 
     public void OnTriggerEnter(Collider other)

@@ -9,15 +9,13 @@ public class PlayerPhysicMovement : MonoBehaviour
     public Rigidbody rb;
     public Transform cam;
     public Animator anim;
+    public GameObject prefabBullet;
     private float acceleration = 3f;
     private float deceleration = 4f;
     private float vel = 0;
-    private float movSpeed = 1600f;
-    private float jumpSpeed = 13f;
+    private float movSpeed = 1800f;
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVel;
-    private float rangeRay = 0.15f;
-    private bool inAir = false;
     
     void Start()
     {
@@ -32,19 +30,10 @@ public class PlayerPhysicMovement : MonoBehaviour
             this.gameObject.SetActive(false);
         }
         anim.SetFloat("Velocity", vel);
-        RaycastHit hit;
-        if(Physics.Raycast(transform.position, new Vector3(0, -1f, 0), out hit, rangeRay))
+
+        if(Input.GetKeyDown("space"))
         {
-            if(hit.transform.tag == "Environment" && Input.GetKeyDown("space") && inAir == false)
-            {
-                inAir = true;
-                anim.SetBool("Jumping", true);
-                Jump();
-            }else if(hit.transform.tag == "Environment" && inAir == true)
-            {
-                inAir = false;
-                anim.SetBool("Jumping", false);
-            }
+            Instantiate(prefabBullet, transform.position, transform.rotation);
         }
     }
 
@@ -75,11 +64,6 @@ public class PlayerPhysicMovement : MonoBehaviour
         {
             vel -= Time.deltaTime * deceleration;
         }
-    }
-
-    public void Jump()
-    {
-        rb.AddForce(transform.up * jumpSpeed, ForceMode.Impulse);
     }
 
     public void Respawn()
