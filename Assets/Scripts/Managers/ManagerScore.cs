@@ -3,7 +3,7 @@ using UnityEngine;
 public class ManagerScore : MonoBehaviour
 {
     public static ManagerScore instancia;
-    public static int playerHealth = 20;
+    public static float playerHealth = 20f;
 
     void Awake()
     {

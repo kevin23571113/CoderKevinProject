@@ -13,7 +13,7 @@ public class PlayerPhysicMovement : MonoBehaviour
     private float acceleration = 3f;
     private float deceleration = 4f;
     private float vel = 0;
-    private float movSpeed = 1800f;
+    private float movSpeed = 3600f;
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVel;
     

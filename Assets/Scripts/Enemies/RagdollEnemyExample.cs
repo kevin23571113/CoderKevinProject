@@ -6,10 +6,6 @@ public class RagdollEnemyExample : MonoBehaviour
 {
     public Transform playerTransform;
     public Animator anim;
-    public CapsuleCollider myCollider;
-    public GameObject hips;
-    public Collider[] ragdollColliders;
-    public Rigidbody[] mainRigidbodies;
     public List<GameObject> monedas = new List<GameObject>();
     public GameObject prefabMoneda;
     private float vel = 0;
@@ -22,8 +18,6 @@ public class RagdollEnemyExample : MonoBehaviour
 
     void Start()
     {
-        GetRagdollBits();
-        RagdollOff();
         monedas.Add(prefabMoneda);
         monedas.Add(prefabMoneda);
         monedas.Add(prefabMoneda);
@@ -34,9 +28,8 @@ public class RagdollEnemyExample : MonoBehaviour
     {
         if(health <= 0)
         {
-            RagdollOn();
-            //CoinsDropped();
-            //lo inhabilite ya que como el objeto no se destruye se instancia monedas cada frame y no queremos eso
+            CoinsDropped();
+            this.gameObject.GetComponent<RagdollEnemyExample>().enabled = false;
         }
         LookPlayer();
         distPlayer = Vector3.Distance(playerTransform.position , transform.position);
@@ -74,40 +67,6 @@ public class RagdollEnemyExample : MonoBehaviour
                 int randomz = Random.Range(-10, 10);
                 Instantiate(monedas[i], new Vector3(transform.position.x + randomx/16f, 0.8f, transform.position.z + randomz/16f), Quaternion.Euler(90f, 0, 0));
             }
-    }
-
-    void GetRagdollBits()
-    {
-        ragdollColliders = hips.GetComponentsInChildren<Collider>();
-        mainRigidbodies = hips.GetComponentsInChildren<Rigidbody>();
-    }
-
-    public void RagdollOn()
-    {
-        anim.enabled = false;
-        myCollider.enabled = false;
-        foreach(Collider col in ragdollColliders)
-        {
-            col.enabled = true;
-        }
-        foreach(Rigidbody rigid in mainRigidbodies)
-        {
-            rigid.isKinematic = false;
-        }
-    }
-
-    public void RagdollOff()
-    {
-        anim.enabled = true;
-        myCollider.enabled = true;
-        foreach(Collider col in ragdollColliders)
-        {
-            col.enabled = false;
-        }
-        foreach(Rigidbody rigid in mainRigidbodies)
-        {
-            rigid.isKinematic = true;
-        }
     }
 
     public void OnTriggerEnter(Collider other)
