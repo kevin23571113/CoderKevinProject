@@ -5,6 +5,7 @@ public class CanvasFunctions : MonoBehaviour
 {
     public Image healthBar;
     public GameObject pausePanel;
+    public Text coins;
     private float currentHealth;
     private float maxHealth = 20f;
     private bool pauseActive;
@@ -28,11 +29,8 @@ public class CanvasFunctions : MonoBehaviour
                 PauseGame();
             }
         }
+        coins.text = "Monedas: " + ManagerScore.coinsAmount;
         
-        if(ManagerGame.EnemigosSala_1 == 0)
-        {
-            
-        }
     }
 
     void PauseGame()

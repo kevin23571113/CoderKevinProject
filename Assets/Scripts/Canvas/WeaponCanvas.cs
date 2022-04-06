@@ -6,9 +6,6 @@ public class WeaponCanvas : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            ManagerGame.instancia.UpdateUI(newWeapon);
-        }
+    
     }
 }

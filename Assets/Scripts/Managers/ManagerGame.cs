@@ -3,9 +3,6 @@ using UnityEngine.UI;
 
 public class ManagerGame : MonoBehaviour
 {
-    public Text nameText;
-    public Text costText;
-    public Text damageText;
     public static ManagerGame instancia;
     public static int EnemigosSala_1 = 5;
     void Awake()
@@ -20,10 +17,4 @@ public class ManagerGame : MonoBehaviour
         }
     }
 
-    public void UpdateUI(WeaponData newWeapon)
-    {
-        nameText.text = newWeapon.name;
-        costText.text = newWeapon.cost.ToString();
-        damageText.text = newWeapon.damage.ToString();
-    }
 }
