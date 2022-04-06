@@ -3,13 +3,11 @@ using UnityEngine.UI;
 
 public class ManagerGame : MonoBehaviour
 {
-    public static ManagerGame instancia;
-    public static int EnemigosSala_1 = 5;
-
     public Text nameText;
     public Text costText;
     public Text damageText;
-
+    public static ManagerGame instancia;
+    public static int EnemigosSala_1 = 5;
     void Awake()
     {
         if(ManagerGame.instancia == null)
@@ -22,10 +20,10 @@ public class ManagerGame : MonoBehaviour
         }
     }
 
-    public void UpdateUI(WeaponData weaponData)
+    public void UpdateUI(WeaponData newWeapon)
     {
-        nameText.text = weaponData.name;
-        costText.text = weaponData.cost.ToString();
-        damageText.text = weaponData.damage.ToString();
+        nameText.text = newWeapon.name;
+        costText.text = newWeapon.cost.ToString();
+        damageText.text = newWeapon.damage.ToString();
     }
 }
