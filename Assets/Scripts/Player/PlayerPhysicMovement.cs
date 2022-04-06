@@ -73,20 +73,4 @@ public class PlayerPhysicMovement : MonoBehaviour
             transform.position = positionInitial;
         }
     }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        switch(other.gameObject.tag)
-        {
-            case "Bullet":
-            ManagerScore.playerHealth -= 5;
-            Debug.Log("Tienes " + ManagerScore.playerHealth + "pts de vida");
-            break;
-            // Este es un ataque de un mago que añadire en el futuro
-            case "MagicOrb":
-            ManagerScore.playerHealth -= 3;
-            Debug.Log("Tienes " + ManagerScore.playerHealth + "pts de vida");
-            break;
-        }
-    }
 }

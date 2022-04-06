@@ -2,22 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RagdollEnemyExample : MonoBehaviour
+public class StandingArcher : MonoBehaviour
 {
+    ArcherEnemyHerecy archerChasing = new ArcherEnemyHerecy();
     public Transform playerTransform;
     public Animator anim;
     public List<GameObject> monedas = new List<GameObject>();
     public GameObject prefabMoneda;
-    private float vel = 0;
-    private float acceleration = 2f;
-    private float deceleration = 5f;
-    private float speedRot = 3f;
     private float distPlayer;
-    private float speedMov = 0.2f;
-    private int health = 10;
 
     void Start()
     {
+        archerChasing.name = "Archer";
+        archerChasing.health = 10;
+        archerChasing.speedRot = 3f;
+
         monedas.Add(prefabMoneda);
         monedas.Add(prefabMoneda);
         monedas.Add(prefabMoneda);
@@ -26,36 +25,19 @@ public class RagdollEnemyExample : MonoBehaviour
 
     void Update()
     {
-        if(health <= 0)
+        if(archerChasing.health <= 0)
         {
             CoinsDropped();
-            this.gameObject.GetComponent<RagdollEnemyExample>().enabled = false;
+            this.gameObject.GetComponent<StandingArcher>().enabled = false;
         }
         LookPlayer();
-        distPlayer = Vector3.Distance(playerTransform.position , transform.position);
-        anim.SetFloat("Velocity", vel);
-        if(distPlayer > 10f)
-        {
-            if(vel < 1)
-            {
-                vel += Time.deltaTime * acceleration;
-            }
-            EnemyMovChasing();
-        }else if(distPlayer <= 10f && vel > 0)
-        {
-            vel -= Time.deltaTime*deceleration;
-        }
+        archerChasing.distPlayer = Vector3.Distance(playerTransform.position , transform.position);
     }
 
     public void LookPlayer()
     {
         Quaternion rotLookPlayer = Quaternion.LookRotation(playerTransform.position-transform.position);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotLookPlayer, speedRot*Time.deltaTime);
-    }
-
-    public void EnemyMovChasing()
-    {
-        transform.position = Vector3.Lerp(transform.position, playerTransform.position, speedMov*Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotLookPlayer,  archerChasing.speedRot*Time.deltaTime);
     }
 
     public void CoinsDropped()
@@ -73,7 +55,7 @@ public class RagdollEnemyExample : MonoBehaviour
     {
         if(other.gameObject.tag == "BulletPlayer")
         {
-            health -= 5;
+            archerChasing.health -= 5;
         }
     }
 }

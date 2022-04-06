@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootingEnemyBehaviour : MonoBehaviour
+public class ChasingArcher : MonoBehaviour
 {
+    ArcherEnemyHerecy archerChasing = new ArcherEnemyHerecy();
     public Transform playerTransform;
     public Animator anim;
-    public GameObject prefabMoneda;
     public List<GameObject> monedas = new List<GameObject>();
+    public GameObject prefabMoneda;
     private float vel = 0;
-    private float acceleration = 2f;
+    private float acceleration = 5f;
     private float deceleration = 5f;
-    private float sightSpeed = 3f;
+    private float speedMov = 0.2f;
     private float distPlayer;
-    private float speedMovShootingEnemy = 0.2f;
-    private int health = 10;
 
     void Start()
     {
+        archerChasing.name = "Archer";
+        archerChasing.health = 10;
+        archerChasing.speedRot = 3f;
+
         monedas.Add(prefabMoneda);
         monedas.Add(prefabMoneda);
         monedas.Add(prefabMoneda);
@@ -26,36 +29,36 @@ public class ShootingEnemyBehaviour : MonoBehaviour
 
     void Update()
     {
-        if(health <= 0)
+        if(archerChasing.health <= 0)
         {
             CoinsDropped();
-            Destroy(this.gameObject);
+            this.gameObject.GetComponent<ChasingArcher>().enabled = false;
         }
         LookPlayer();
-        distPlayer = Vector3.Distance(playerTransform.position , transform.position);
+        archerChasing.distPlayer = Vector3.Distance(playerTransform.position , transform.position);
         anim.SetFloat("Velocity", vel);
-        if(distPlayer > 10f)
+        if(archerChasing.distPlayer > 10f)
         {
             if(vel < 1)
             {
                 vel += Time.deltaTime * acceleration;
             }
-            EnemyMovChasing();
-        }else if(distPlayer <= 10f && vel > 0)
+            MovChasing();
+        }else if(archerChasing.distPlayer <= 10f && vel > 0)
         {
-            vel -= Time.deltaTime*deceleration;
+            vel -= Time.deltaTime * deceleration;
         }
     }
 
     public void LookPlayer()
     {
         Quaternion rotLookPlayer = Quaternion.LookRotation(playerTransform.position-transform.position);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotLookPlayer, sightSpeed*Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotLookPlayer,  archerChasing.speedRot*Time.deltaTime);
     }
 
-    public void EnemyMovChasing()
+    public void MovChasing()
     {
-        transform.position = Vector3.Lerp(transform.position, playerTransform.position, speedMovShootingEnemy*Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, playerTransform.position, speedMov*Time.deltaTime);
     }
 
     public void CoinsDropped()
@@ -73,7 +76,7 @@ public class ShootingEnemyBehaviour : MonoBehaviour
     {
         if(other.gameObject.tag == "BulletPlayer")
         {
-            health -= 5;
+            archerChasing.health -= 5;
         }
     }
 }

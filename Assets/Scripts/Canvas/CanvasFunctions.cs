@@ -9,9 +9,6 @@ public class CanvasFunctions : MonoBehaviour
     private float maxHealth = 20f;
     private bool pauseActive;
 
-
-
-
     void Start()
     {
         
@@ -30,6 +27,11 @@ public class CanvasFunctions : MonoBehaviour
             {
                 PauseGame();
             }
+        }
+        
+        if(ManagerGame.EnemigosSala_1 == 0)
+        {
+            
         }
     }
 

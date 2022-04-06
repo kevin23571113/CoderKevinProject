@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BulletShootingEnemyBehaviour : MonoBehaviour
 {
+    public ScriptableBullet newBullet;
     private float destroyTimer = 6f;
-    private float bulletMovSpeed = 15f;
 
     void Start()
     {
@@ -14,13 +14,15 @@ public class BulletShootingEnemyBehaviour : MonoBehaviour
 
     void Update()
     {
-        transform.position += transform.forward*bulletMovSpeed*Time.deltaTime;
+        transform.position += transform.forward* newBullet.speedMov* Time.deltaTime;
     }
 
     public void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player")
         {
+            ManagerScore.playerHealth -= newBullet.damage;
+            Debug.Log("Tienes " + ManagerScore.playerHealth + "pts de vida.");
             Destroy(this.gameObject);
         }
     }
