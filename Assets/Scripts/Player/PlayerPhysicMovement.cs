@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerPhysicMovement : MonoBehaviour
 {
@@ -9,13 +8,18 @@ public class PlayerPhysicMovement : MonoBehaviour
     public Rigidbody rb;
     public Transform cam;
     public Animator anim;
-    public GameObject prefabBullet;
+    public GameObject swordCollider;
+    public GameObject shieldCollider;
     private float acceleration = 3f;
     private float deceleration = 4f;
     private float vel = 0;
-    private float movSpeed = 3600f;
+    private float movSpeed = 4000f;
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVel;
+    private int attackFase = 0;
+    private float attackTimer = 0;
+    private bool attacking = false;
+    private bool blocking = false;
     
     void Start()
     {
@@ -25,21 +29,37 @@ public class PlayerPhysicMovement : MonoBehaviour
     void Update()
     {
         Respawn();
-        if(ManagerScore.playerHealth <= 0)
-        {
-            this.gameObject.SetActive(false);
-        }
         anim.SetFloat("Velocity", vel);
-
-        if(Input.GetKeyDown("space"))
+        if(attackTimer > 0)
         {
-            Instantiate(prefabBullet, transform.position, transform.rotation);
+            attackTimer -= Time.deltaTime;
+        }else if(attackTimer < 0)
+        {
+            attackTimer = 0;
+        }
+        if(blocking == false)
+        {
+            AttackCombo();
+        }
+        if(attackFase == 0)
+        {
+            swordCollider.SetActive(false);
+        }else
+        {
+            swordCollider.SetActive(true);
+        }
+        if(attackFase == 0)
+        {
+            Block();
         }
     }
 
     void FixedUpdate()
     {
-        Move();
+        if(attackFase == 0 && blocking == false)
+        {
+            Move();
+        }
     }
 
     public void Move()
@@ -73,4 +93,68 @@ public class PlayerPhysicMovement : MonoBehaviour
             transform.position = positionInitial;
         }
     }
+
+    public void AttackCombo()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            if(attackTimer <= 0.55f && attackFase <= 2)
+            {
+                attackFase ++;
+                attacking = false;
+            }
+        }
+        switch(attackFase)
+        {
+            case 1:
+            anim.SetBool("Attack1", true);
+            if(attacking == false)
+            {
+                attackTimer = 1.3f;
+                attacking = true;
+            }
+            break;
+            case 2:
+            anim.SetBool("Attack2", true);
+            if(attacking == false)
+            {
+                attackTimer = 1.14f;
+                attacking = true;
+            }
+            break;
+            case 3:
+            anim.SetBool("Attack3", true);
+            transform.position += transform.forward*1.1f*Time.deltaTime;
+            if(attacking == false)
+            {
+                attackTimer = 1.708f;
+                attacking = true;
+            }
+            break;
+        }
+        if(attackTimer <= 0 && attackFase != 0)
+        {
+            anim.SetBool("Attack1", false);
+            anim.SetBool("Attack2", false);
+            anim.SetBool("Attack3", false);
+            attackFase = 0;
+            attacking = false;
+        }
+    }
+
+    public void Block()
+    {
+        if(Input.GetMouseButton(1))
+        {
+            blocking = true;
+            shieldCollider.SetActive(true);
+            anim.SetBool("Block", true);
+        }else
+        {
+            anim.SetBool("Block", false);
+            blocking = false;
+            shieldCollider.SetActive(false);
+        }
+    }
+
 }

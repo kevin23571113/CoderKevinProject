@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - BulletPlayer
   - Environment
+  - ShieldPlayer
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - PostProcessing
   - 
   - 
   - 
