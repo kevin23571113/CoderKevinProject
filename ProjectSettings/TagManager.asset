@@ -9,6 +9,8 @@ TagManager:
   - BulletPlayer
   - Environment
   - ShieldPlayer
+  - AxeEnem
+  - Wall
   layers:
   - Default
   - TransparentFX

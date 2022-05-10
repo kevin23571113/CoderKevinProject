@@ -5,6 +5,7 @@ using UnityEngine;
 public class UnlockNextRoom : MonoBehaviour
 {
     public Animator anim;
+    public GameObject arrow;
     
     void Start()
     {
@@ -14,9 +15,10 @@ public class UnlockNextRoom : MonoBehaviour
     void Update()
     {
 
-        if(ManagerGame.EnemigosSala_1 == 0)
+        if(ManagerGame.EnemigosSala_1 <= 6)
         {
             anim.SetBool("NextRoom", true);
+            arrow.SetActive(true);
         }
     }
 }

@@ -7,7 +7,7 @@ public class CanvasFunctions : MonoBehaviour
     public GameObject pausePanel;
     public Text coins;
     private float currentHealth;
-    private float maxHealth = 20f;
+    private float maxHealth = 65f;
     private bool pauseActive;
 
     void Start()
@@ -19,7 +19,7 @@ public class CanvasFunctions : MonoBehaviour
     {
         currentHealth = ManagerScore.playerHealth;
         healthBar.fillAmount = currentHealth/maxHealth;
-        if(Input.GetKeyDown(KeyCode.T))
+        if(Input.GetKeyDown(KeyCode.P))
         {
             if(pauseActive)
             {

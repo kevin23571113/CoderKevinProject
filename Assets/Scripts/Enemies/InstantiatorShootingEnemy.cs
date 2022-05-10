@@ -52,7 +52,17 @@ public class InstantiatorShootingEnemy : MonoBehaviour
             bulletTimer = 2f;
             anim.SetBool("Shooting", true);
             animShooting = true;
-            animTimer= 7f;
+            animTimer= 10f;
         }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "BulletPlayer")
+        {
+            bulletTimer = 2f;
+            animTimer = 3f;
+            animShooting = false;
+        }        
     }
 }

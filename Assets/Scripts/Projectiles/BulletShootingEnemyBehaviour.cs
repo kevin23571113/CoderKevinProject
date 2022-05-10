@@ -4,7 +4,7 @@ using System;
 public class BulletShootingEnemyBehaviour : MonoBehaviour
 {
     public ScriptableBullet newBullet;
-    private float destroyTimer = 10f;
+    private float destroyTimer = 18f;
     private bool moving = true;
 
     void Start()
@@ -32,10 +32,6 @@ public class BulletShootingEnemyBehaviour : MonoBehaviour
             case "ShieldPlayer":
             //partculas de flecha rebotando
             Destroy(this.gameObject);//esto es set active false
-            break;
-            case "Environment":
-            moving = false;
-            this.gameObject.GetComponent<BoxCollider>().enabled = false;
             break;
         }
     }

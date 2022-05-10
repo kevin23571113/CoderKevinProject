@@ -10,16 +10,20 @@ public class PlayerPhysicMovement : MonoBehaviour
     public Animator anim;
     public GameObject swordCollider;
     public GameObject shieldCollider;
+    public GameObject postProcessGlobal;
+    public GameObject winPanel;
     private float acceleration = 3f;
     private float deceleration = 4f;
     private float vel = 0;
-    private float movSpeed = 4000f;
+    private float movSpeed = 4300f;
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVel;
     private int attackFase = 0;
     private float attackTimer = 0;
     private bool attacking = false;
     private bool blocking = false;
+    private int axeDamage = 6;
+    private float hit = 0;
     
     void Start()
     {
@@ -28,6 +32,7 @@ public class PlayerPhysicMovement : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(ManagerGame.EnemigosSala_1);
         Respawn();
         anim.SetFloat("Velocity", vel);
         if(attackTimer > 0)
@@ -44,19 +49,19 @@ public class PlayerPhysicMovement : MonoBehaviour
         if(attackFase == 0)
         {
             swordCollider.SetActive(false);
+            Block();
         }else
         {
             swordCollider.SetActive(true);
         }
-        if(attackFase == 0)
-        {
-            Block();
-        }
+        BeingHit();
+        LowHealthPostPorcess();
+        YouWin();
     }
 
     void FixedUpdate()
     {
-        if(attackFase == 0 && blocking == false)
+        if(attackFase == 0 && blocking == false && hit <= 0)
         {
             Move();
         }
@@ -124,7 +129,7 @@ public class PlayerPhysicMovement : MonoBehaviour
             break;
             case 3:
             anim.SetBool("Attack3", true);
-            transform.position += transform.forward*1.1f*Time.deltaTime;
+            transform.position += transform.forward * 1.1f * Time.deltaTime;
             if(attacking == false)
             {
                 attackTimer = 1.708f;
@@ -157,4 +162,46 @@ public class PlayerPhysicMovement : MonoBehaviour
         }
     }
 
+    public void BeingHit()
+    {
+        if(hit > 0)
+        {
+            anim.SetBool("Hit",true);
+            hit -= Time.deltaTime;
+        }else if (hit <= 0)
+        {
+            anim.SetBool("Hit",false);
+        }
+    }
+
+    public void LowHealthPostPorcess()
+    {
+        if(ManagerScore.playerHealth <= 8f)
+        {
+            postProcessGlobal.SetActive(true);
+        }
+    }
+
+    public void YouWin()
+    {
+        if(ManagerGame.EnemigosSala_1 == 0)
+        {
+            winPanel.SetActive(true);
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        switch(other.gameObject.tag)
+        {
+            case "AxeEnem":
+            ManagerScore.playerHealth -= axeDamage;
+            if(blocking == false && attackTimer <= 0)
+            {
+                hit = 0.25f;
+            }
+            Debug.Log("Tienes " + ManagerScore.playerHealth + "pts de vida.");
+            break;
+        }
+    }
 }

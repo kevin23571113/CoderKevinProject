@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 712f90b8155a54b19ab4efdc7441ef04, type: 3}
   m_Name: FastArrow
   m_EditorClassIdentifier: 
-  damage: 7
+  damage: 5
   speedMov: 20

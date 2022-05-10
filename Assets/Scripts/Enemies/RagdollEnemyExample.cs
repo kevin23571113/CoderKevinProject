@@ -11,10 +11,11 @@ public class RagdollEnemyExample : MonoBehaviour
     private float vel = 0;
     private float acceleration = 2f;
     private float deceleration = 5f;
-    private float speedRot = 3f;
+    private float speedRot = 5f;
     private float distPlayer;
     private float speedMov = 0.2f;
-    private int health = 10;
+    private int health = 20;
+    private float hitTimer = 0; 
 
     void Start()
     {
@@ -26,24 +27,33 @@ public class RagdollEnemyExample : MonoBehaviour
 
     void Update()
     {
+        anim.SetFloat("Velocity", vel);
+        distPlayer = Vector3.Distance(playerTransform.position , transform.position);
         if(health <= 0)
         {
             CoinsDropped();
+            ManagerGame.EnemigosSala_1 -= 1;
             this.gameObject.GetComponent<RagdollEnemyExample>().enabled = false;
         }
-        LookPlayer();
-        distPlayer = Vector3.Distance(playerTransform.position , transform.position);
-        anim.SetFloat("Velocity", vel);
-        if(distPlayer > 10f)
+        if(hitTimer <= 0)
         {
-            if(vel < 1)
+            anim.SetBool("Hit", false);
+            LookPlayer();
+            if(distPlayer > 8.5f)
             {
-                vel += Time.deltaTime * acceleration;
+                if(vel < 1)
+                {
+                    vel += Time.deltaTime * acceleration;
+                }
+                EnemyMovChasing();
             }
-            EnemyMovChasing();
-        }else if(distPlayer <= 10f && vel > 0)
+        }else if(hitTimer > 0)
         {
-            vel -= Time.deltaTime*deceleration;
+            hitTimer -= Time.deltaTime;
+        }
+        if(distPlayer <= 8.5f && vel > 0)
+        {
+            vel -= Time.deltaTime * deceleration;
         }
     }
 
@@ -74,6 +84,8 @@ public class RagdollEnemyExample : MonoBehaviour
         if(other.gameObject.tag == "BulletPlayer")
         {
             health -= 5;
+            anim.SetBool("Hit", true);
+            hitTimer = 0.7f;
         }
     }
 }

@@ -9,7 +9,7 @@ public class OnlyRagdollBehaviour : MonoBehaviour
     public GameObject hips;
     public Collider[] ragdollColliders;
     public Rigidbody[] mainRigidbodies;
-    private int health = 10;
+    private int health = 20;
 
     void Start()
     {

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class ManagerGame : MonoBehaviour
 {
     public static ManagerGame instancia;
-    public static int EnemigosSala_1 = 5;
+    public static int EnemigosSala_1 = 8;
 
     void Awake()
     {
@@ -16,6 +16,7 @@ public class ManagerGame : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
 }

@@ -6,6 +6,7 @@ public class PlayerDeath : MonoBehaviour
 {
     public Animator anim;
     private bool onDeath = false;
+    public GameObject restartPanel;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class PlayerDeath : MonoBehaviour
             anim.SetBool("Block", false);
             anim.SetBool("OnDeath", true);
             this.gameObject.GetComponent<PlayerPhysicMovement>().enabled = false;
+            restartPanel.SetActive(true);
             onDeath = true;
         }
         else if(ManagerScore.playerHealth > 0 && onDeath == true)
